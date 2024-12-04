@@ -246,7 +246,7 @@ This section provides detailed descriptions of CX2 Visual Style properties, incl
 - **Cytoscape DT Names**:
   - `NODE_WIDTH`
   - `NODE_HEIGHT`
-- **Comment**: Node height and width are generally independent from each other. However, in Cytoscape DT, node width and height can be locked so that changing one automatically changes the other.
+- **Comment**: Node height and width are generally independent from each other. However, in Cytoscape Web, node width and height can be locked so that changing one automatically changes the other.
 - **Example**:
 
   ```json
@@ -261,7 +261,7 @@ This section provides detailed descriptions of CX2 Visual Style properties, incl
 ### 2.2.4. Node Background Opacity
 
 - **CX2 Visual Property Name**: `NODE_BACKGROUND_OPACITY`
-- **Description**: Sets the opacity of node backgrounds.
+- **Description**: Sets the opacity of node backgrounds. 0 means transparent.
 - **Data Type**: `number`
 - **Constraints**:
   - **Minimum**: `0`
@@ -278,7 +278,7 @@ This section provides detailed descriptions of CX2 Visual Style properties, incl
   }
   ```
 
-- **Cytoscape DT Name**: `NODE_TRANSPARENCY` (Note: In Cytoscape DT, the value of `NODE_TRANSPARENCY` is an integer from 0 to 255.)
+- **Cytoscape DT Name**: `NODE_TRANSPARENCY` (Note: In Cytoscape DT, the value of `NODE_TRANSPARENCY` is an integer from 0 to 255 and 0 means transparent.)
 - **Example**:
 
   ```json
@@ -473,7 +473,7 @@ This section provides detailed descriptions of CX2 Visual Style properties, incl
 
 - **Cytoscape DT Name**: `NODE_LABEL`
 - **Example**:
-
+  Setting a passthrough mapping from the node attribute 'name' to the Node Label.
   ```json
   {
     "nodeMapping": {
