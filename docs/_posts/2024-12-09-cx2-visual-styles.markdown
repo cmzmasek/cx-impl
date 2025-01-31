@@ -1556,14 +1556,13 @@ This section provides detailed descriptions of CX2 Visual Style properties, incl
   - `"solid"`
   - `"dotted"`
   - `"dashed"`
-  - `"double"`
 - **JSON Schema**:
 
   ```json
   {
     "EDGE_LINE_STYLE": {
       "type": "string",
-      "enum": ["solid", "dotted", "dashed", "double"]
+      "enum": ["solid", "dotted", "dashed"]
     }
   }
   ```
