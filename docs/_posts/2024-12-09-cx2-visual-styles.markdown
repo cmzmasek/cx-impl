@@ -1,7 +1,7 @@
 ---
 layout: post
 title: CX2 Visual Styles
-date: 2024-12-09
+date: 2025-02-10
 categories: cx2
 permalink: /:categories/:title/
 ---
