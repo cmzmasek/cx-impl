@@ -3,7 +3,7 @@ layout: post
 title: CX2 Visual Styles
 date: 2024-09-18
 collection: excluded_posts
-categories: cx2
+categories: schema
 permalink: /:categories/:title/
 published: true
 ---
