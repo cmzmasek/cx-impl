@@ -358,7 +358,119 @@ This singular element is an object endowed with the following attributes:
  Cytoscape will establish the the zoom level and the center of the network when **NETWORK_CENTER_X_LOCATION**, **NETWORK_CENTER_Y_LOCATION** and **NETWORK_SCALE_FACTOR** are all defined. Otherwise, when the nework is opened, Cytoscape will automatically fit the network within the viewport.
 - **NETWORK_CENTER_Y_LOCATION** - The Y location of network view center when it opened.
 - **NETWORK_SCALE_FACTOR** - The zoom level of the network view when opened.
+- **tableDisplayConfiguration** - Stores user interface settings for displaying node and edge attribute tables in Cytoscape. This configuration preserves column visibility, ordering, sizing, and sorting preferences.
 
+    **Schema**
+
+    The `tableDisplayConfiguration` attribute contains an object with up to three table type configurations:
+
+    ```json
+    {
+      "tableDisplayConfiguration": {
+      "nodeTable": <table_config>,
+      "edgeTable": <table_config>, 
+     }
+    }
+    ```
+
+    Each `<table_config>` object has the following structure:
+
+    - **`columnConfiguration`** (required): An array of column configuration objects. The order of objects in this array determines the left-to-right display order of columns in the table.
+    - **`sortColumn`** (optional): The attribute name of the currently sorted column. If null or omitted, no sorting is applied.
+    - **`sortDirection`** (optional): The sort direction, either "ascending" or "descending". Only relevant when `sortColumn` is specified. Defaults to "ascending".
+    
+
+    **Column Configuration Object**
+
+    Each object in the `columnConfiguration` array has these attributes:
+
+    - **`attributeName`** (required): The name of the attribute. Must match an attribute name declared in the corresponding aspect (`nodes` or `edges`). It can not be an alias.
+    - **`visible`** (required): Boolean indicating whether this column should be displayed in the table.
+    - **`columnWidth`** (optional): The width of the column in pixels. If omitted, applications should use default column sizing.
+
+    **Behavior Specifications**
+
+    - **Column Ordering**: The position of column configuration objects in the `columnConfiguration` array determines the display order from left to right.
+    - **Hidden Columns**: Columns with `visible: false` are not displayed but retain their position in the array to preserve intended ordering when made visible.
+    - **Single Column Sorting**: Only one column per table can be sorted at a time. The sort state is maintained at the table level through `sortColumn` and `sortDirection` attributes.
+    - **Missing Configuration**: If `tableDisplayConfiguration` is omitted or a specific table configuration is missing, applications should use their default table display behavior.
+    - **Unknown Attributes**: If a column configuration references an attribute name that doesn't exist in the network, applications should ignore that column configuration.
+
+    **Example**
+
+    ```json
+    {
+      "visualEditorProperties": [
+        {
+          "arrowColorMatchesEdge": true,
+          "nodeSizeLocked": false,
+          "NETWORK_CENTER_X_LOCATION": 100.0,
+          "NETWORK_CENTER_Y_LOCATION": 50.0,
+          "NETWORK_SCALE_FACTOR": 1.2,
+          "tableDisplayConfiguration": {
+            "nodeTable": {
+              "columnConfiguration": [
+                {
+                  "attributeName": "name",
+                  "visible": true,
+                  "columnWidth": 150
+                },
+                {
+                  "attributeName": "degree",
+                  "visible": true,
+                  "columnWidth": 80
+                },
+                {
+                  "attributeName": "betweenness_centrality",
+                  "visible": false,
+                  "columnWidth": 120
+                },
+                {
+                  "attributeName": "gene_symbol",
+                  "visible": true,
+                  "columnWidth": 100
+                }
+              ],
+              "sortColumn": "degree",
+              "sortDirection": "descending"
+            },
+            "edgeTable": {
+              "columnConfiguration": [
+                {
+                  "attributeName": "interaction",
+                  "visible": true,
+                  "columnWidth": 120
+                },
+                {
+                  "attributeName": "weight",
+                  "visible": true,
+                  "columnWidth": 80
+                },
+                {
+                  "attributeName": "confidence",
+                  "visible": false,
+                  "columnWidth": 90
+                }
+              ],
+              "sortColumn": "weight",
+              "sortDirection": "ascending"
+            }
+          }  
+        }
+      ]
+    }
+    ```
+
+    In this example:
+    - **Node table**: Displays columns in order: name, degree, gene_symbol (betweenness_centrality is hidden but maintains its position). Table is sorted by degree in descending order.
+    - **Edge table**: Displays interaction and weight columns (confidence is hidden). Table is sorted by weight in ascending order.
+    - **Network table**: Displays name and description columns (version is hidden). No sorting is applied.
+
+     **Compatibility Notes**
+
+    - This enhancement is backwards compatible. Applications that don't support table display configuration will simply ignore this attribute.
+    - Applications should validate that `sortColumn` values reference existing attributes in the `columnConfiguration` array.
+    - The `tableDisplayConfiguration` attribute is optional and can be omitted entirely or selectively (e.g., only including `nodeTable` configuration).
 
 ## Opaque aspects
 Applications are allowed to add any non-core aspects to CX as extensions. These aspects are called 'opaque aspects'. The element of an opaque aspect is a JSON object, and all elements in an opaque aspect should have the same data structure. Attributes in opaque aspect elements can also be declared in the attributeDeclarations aspect.          
